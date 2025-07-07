@@ -7,8 +7,9 @@
 <body>
     <div class="container">
         <header>
-            <h1>Timestamp Converter</h1>
+            <h1>HootTime</h1>
             <div class="controls">
+                <button id="toggleFloating" class="btn btn-secondary">Toggle Floating</button>
                 <button id="clearAll" class="btn btn-secondary">Clear All</button>
                 <button id="refresh" class="btn btn-primary">Refresh</button>
             </div>
@@ -16,6 +17,15 @@
         
         <div class="instructions">
             <p>Highlight text containing timestamps on any webpage to convert them to UTC.</p>
+            <p><strong>⌘+Shift+F</strong> (Mac) or <strong>Ctrl+Alt+T</strong> (PC) to toggle floating window</p>
+        </div>
+        
+        <div class="manual-converter">
+            <h3>Manual Converter</h3>
+            <div class="converter-input">
+                <input type="text" id="manualTimestamp" placeholder="Enter timestamp (e.g., 1640995200, 4:00 PM EDT)">
+                <button id="convertBtn" class="btn btn-primary">Convert</button>
+            </div>
         </div>
         
         <div class="timestamp-list" id="timestampList">

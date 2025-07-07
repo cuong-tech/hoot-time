@@ -11,8 +11,28 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     clearTimestamps();
   } else if (message.action === 'removeTimestamp') {
     removeTimestamp(message.id);
+  } else if (message.action === 'updateTimestampLabel') {
+    updateTimestampLabel(message.id, message.customLabel);
+  } else if (message.action === 'broadcastFloatingWindowState') {
+    broadcastFloatingWindowState(message.visible);
   }
 });
+
+async function broadcastFloatingWindowState(visible) {
+  try {
+    const tabs = await chrome.tabs.query({});
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, { 
+        action: 'setFloatingWindowVisibility', 
+        visible: visible 
+      }).catch(() => {
+        // Ignore errors for tabs that don't have content scripts
+      });
+    });
+  } catch (error) {
+    console.error('Error broadcasting floating window state:', error);
+  }
+}
 
 async function addTimestamps(timestamps, url, title) {
   try {
@@ -37,6 +57,14 @@ async function addTimestamps(timestamps, url, title) {
     const trimmedList = timestampList.slice(-100);
     
     await chrome.storage.local.set({ timestampList: trimmedList });
+    
+    // Notify all content scripts to update their floating windows
+    const tabs = await chrome.tabs.query({});
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, { action: 'updateFloatingWindow' }).catch(() => {
+        // Ignore errors for tabs that don't have content scripts
+      });
+    });
   } catch (error) {
     console.error('Error adding timestamps:', error);
   }
@@ -55,6 +83,14 @@ async function getTimestamps() {
 async function clearTimestamps() {
   try {
     await chrome.storage.local.set({ timestampList: [] });
+    
+    // Notify all content scripts to update their floating windows
+    const tabs = await chrome.tabs.query({});
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, { action: 'updateFloatingWindow' }).catch(() => {
+        // Ignore errors for tabs that don't have content scripts
+      });
+    });
   } catch (error) {
     console.error('Error clearing timestamps:', error);
   }
@@ -67,8 +103,46 @@ async function removeTimestamp(id) {
     
     const filteredList = timestampList.filter(item => item.id !== id);
     await chrome.storage.local.set({ timestampList: filteredList });
+    
+    // Notify all content scripts to update their floating windows
+    const tabs = await chrome.tabs.query({});
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, { action: 'updateFloatingWindow' }).catch(() => {
+        // Ignore errors for tabs that don't have content scripts
+      });
+    });
   } catch (error) {
     console.error('Error removing timestamp:', error);
+  }
+}
+
+async function updateTimestampLabel(id, customLabel) {
+  try {
+    const stored = await chrome.storage.local.get(['timestampList']);
+    const timestampList = stored.timestampList || [];
+    
+    // Find and update the timestamp
+    const timestamp = timestampList.find(item => item.id === id);
+    if (timestamp) {
+      if (customLabel && customLabel.trim()) {
+        timestamp.customLabel = customLabel.trim();
+      } else {
+        // Remove custom label if empty
+        delete timestamp.customLabel;
+      }
+      
+      await chrome.storage.local.set({ timestampList: timestampList });
+      
+      // Notify all content scripts to update their floating windows
+      const tabs = await chrome.tabs.query({});
+      tabs.forEach(tab => {
+        chrome.tabs.sendMessage(tab.id, { action: 'updateFloatingWindow' }).catch(() => {
+          // Ignore errors for tabs that don't have content scripts
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error updating timestamp label:', error);
   }
 }
 

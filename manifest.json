@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Timestamp Converter",
+  "name": "HootTime",
   "version": "1.0",
   "description": "Convert highlighted timestamps to UTC and track them across tabs",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "content_scripts": [
     {
@@ -18,6 +19,6 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Timestamp Converter"
+    "default_title": "HootTime"
   }
 } 

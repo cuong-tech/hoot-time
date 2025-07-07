@@ -1,4 +1,4 @@
-# Timestamp Converter Chrome Extension
+# HootTime Chrome Extension
 
 A Chrome extension that automatically detects timestamps in highlighted text, converts them to UTC, and maintains a list of converted timestamps accessible across all browser tabs.
 
@@ -8,6 +8,7 @@ A Chrome extension that automatically detects timestamps in highlighted text, co
 - **UTC Conversion**: Automatically converts detected timestamps to UTC format
 - **Persistent Storage**: Maintains a list of converted timestamps that persists across browser sessions
 - **Cross-Tab Access**: View your timestamp list from any browser tab
+- **Floating Window**: Persistent floating window that stays visible across all tabs
 - **Visual Feedback**: Shows confirmation when timestamps are detected and converted
 - **Easy Management**: Copy timestamps to clipboard, remove individual entries, or clear all at once
 
@@ -23,13 +24,30 @@ The extension recognizes the following timestamp formats:
   - `2022-01-01 12:00:00`
   - `01/01/2022 12:00:00`
   - `01-01-2022 12:00:00`
-- **Time Formats with Timezone**:
-  - `4:00:00 PM EDT`, `4:00 PM EDT`
-  - `16:00:00 EDT`, `16:00 EDT`
+- **Time Formats with Timezone** (displays day relationship to UTC):
+  - `4:00:00 PM EDT`, `4:00 PM EDT` → "Same day 21:00:00.000Z"
+  - `9:30 PM PST`, `9:30 PM PST` → "Next day 05:30:00.000Z"
+  - `11:00 AM EST`, `11:00 EST` → "Same day 16:00:00.000Z"
 - **Date + Time with Timezone**:
   - `2022-01-01 4:00:00 PM EDT`
   - `01/01/2022 4:00 PM EST`
 - **Supported Timezones**: EST, EDT, CST, CDT, MST, MDT, PST, PDT, UTC, GMT
+
+## Time-Only Timestamp Behavior
+
+When you highlight a time-only timestamp (like `4:00:00 PM EDT`), the extension converts it to UTC and indicates whether the UTC result falls on the same day or next day compared to the original local date:
+
+- **Same day**: The UTC time falls on the same calendar day as the local date
+- **Next day**: The UTC time falls on the next calendar day compared to the local date
+
+**Example**: `4:00:00 PM EDT` (16:00 EDT = 21:00 UTC):
+- **Result**: "Same day 21:00:00.000Z" (UTC time is still on the same day)
+
+**Example**: `9:30 PM PST` (21:30 PST = 05:30 UTC next day):
+- **Result**: "Next day 05:30:00.000Z" (UTC time is on the next day)
+
+**Example**: `11:00 AM EST` (11:00 EST = 16:00 UTC):
+- **Result**: "Same day 16:00:00.000Z" (UTC time is still on the same day)
 
 ## Installation
 
@@ -54,15 +72,24 @@ The extension works without icons, but you can add them for a better look:
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
-  },
+  }
 ```
 
 ## Usage
 
 1. **Highlight Text**: On any webpage, highlight text that contains timestamps
 2. **Automatic Detection**: If timestamps are found, you'll see a green confirmation notification
-3. **View Conversions**: Click the extension icon in the Chrome toolbar to open the popup window
-4. **Manage Timestamps**: 
+3. **View Conversions**: 
+   - Click the extension icon to open the popup window
+   - **OR** press **⌘+Shift+F** (Mac) or **Ctrl+Alt+T** (PC) to toggle the floating window
+   - **OR** click "Toggle Floating" in the popup
+4. **Floating Window**: 
+   - Stays visible across all browser tabs
+   - Drag to reposition anywhere on screen
+   - Shows last 10 timestamps
+   - Click UTC timestamps to copy them
+   - Press **⌘+Shift+F** (Mac) or **Ctrl+Alt+T** (PC) to show/hide
+5. **Manage Timestamps**: 
    - View all converted timestamps with their original values
    - Copy UTC timestamps to clipboard
    - Remove individual entries
@@ -77,13 +104,14 @@ Try highlighting these example timestamps on any webpage:
 - Unix milliseconds: `1640995200000`
 - ISO format: `2022-01-01T00:00:00Z`
 - Standard format: `2022-01-01 12:00:00`
-- Time with timezone: `4:00:00 PM EDT`
+- Time with timezone: `4:00:00 PM EDT` (shows as "Same day 21:00:00.000Z")
+- Time with timezone: `9:30 PM PST` (shows as "Next day 05:30:00.000Z")
 - Date + time with timezone: `01/01/2022 4:00 PM EST`
 
 ## File Structure
 
 ```
-timestamp-converter/
+hoottime/
 ├── manifest.json          # Extension configuration
 ├── content.js            # Content script for timestamp detection
 ├── background.js         # Background script for data management
@@ -92,6 +120,7 @@ timestamp-converter/
 ├── popup.css            # Popup window styling
 ├── icon.svg             # SVG icon source
 ├── generate-icons.html  # Icon generator tool
+├── LICENSE              # HootTime License
 └── README.md            # This file
 ```
 
@@ -101,8 +130,10 @@ timestamp-converter/
 - **Permissions**: 
   - `storage`: For persisting timestamp data
   - `activeTab`: For accessing page content
+  - `tabs`: For updating floating windows across all tabs
 - **Storage**: Uses Chrome's local storage API (limited to last 100 timestamps)
 - **Cross-Tab**: Background script maintains data across all tabs
+- **Floating Window**: Content script creates draggable floating window on each page
 
 ## Privacy
 
@@ -129,8 +160,8 @@ timestamp-converter/
 
 ## Contributing
 
-Feel free to submit issues, feature requests, or pull requests to improve the extension.
+Issues and feature requests are welcome. For any modifications or contributions, please contact the copyright holder for permission before proceeding.
 
 ## License
 
-This project is open source and available under the MIT License. 
+This project is proprietary software under the HootTime License. Usage is permitted, but modification, distribution, and selling require explicit permission from the copyright holder. 

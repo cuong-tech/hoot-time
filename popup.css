@@ -33,14 +33,15 @@ header h1 {
 
 .controls {
     display: flex;
-    gap: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
 .btn {
-    padding: 6px 12px;
+    padding: 6px 8px;
     border: none;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11px;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -72,6 +73,45 @@ header h1 {
 .instructions p {
     margin: 0;
     font-size: 14px;
+    color: #6c757d;
+}
+
+.manual-converter {
+    padding: 16px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.manual-converter h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.converter-input {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.converter-input input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.converter-input input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.converter-input input::placeholder {
     color: #6c757d;
 }
 
