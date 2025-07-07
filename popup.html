@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Timestamp Converter</h1>
+            <div class="controls">
+                <button id="clearAll" class="btn btn-secondary">Clear All</button>
+                <button id="refresh" class="btn btn-primary">Refresh</button>
+            </div>
+        </header>
+        
+        <div class="instructions">
+            <p>Highlight text containing timestamps on any webpage to convert them to UTC.</p>
+        </div>
+        
+        <div class="timestamp-list" id="timestampList">
+            <div class="loading">Loading timestamps...</div>
+        </div>
+        
+        <footer>
+            <div class="stats">
+                <span id="timestampCount">0</span> timestamps converted
+            </div>
+        </footer>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html> 

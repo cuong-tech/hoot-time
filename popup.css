@@ -1,0 +1,258 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    width: 400px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.instructions {
+    padding: 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.instructions p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.timestamp-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+}
+
+.timestamp-item {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    padding: 12px;
+    transition: all 0.2s;
+}
+
+.timestamp-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.timestamp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.timestamp-type {
+    background: #e9ecef;
+    color: #495057;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.timestamp-type.unix {
+    background: #d4edda;
+    color: #155724;
+}
+
+.timestamp-type.date {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.timestamp-type.time {
+    background: #fce4ec;
+    color: #880e4f;
+}
+
+.timestamp-type.datetime {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.remove-btn:hover {
+    background: #f8d7da;
+}
+
+.timestamp-original {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #495057;
+    margin-bottom: 8px;
+    border-left: 3px solid #667eea;
+}
+
+.timestamp-utc {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    background: #e8f5e8;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #2d5a2d;
+    margin-bottom: 8px;
+    border-left: 3px solid #28a745;
+}
+
+.timestamp-meta {
+    font-size: 11px;
+    color: #6c757d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timestamp-source {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.timestamp-source a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.timestamp-source a:hover {
+    text-decoration: underline;
+}
+
+.copy-btn {
+    background: none;
+    border: 1px solid #667eea;
+    color: #667eea;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover {
+    background: #667eea;
+    color: white;
+}
+
+.copy-btn.copied {
+    background: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+footer {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.stats {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Scrollbar styling */
+.timestamp-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.timestamp-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.timestamp-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.timestamp-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+} 

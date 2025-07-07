@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator for Timestamp Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+        }
+        .icon-preview {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .icon-sizes {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .size-option {
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .size-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 5px;
+        }
+        .download-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .download-btn:hover {
+            background: #5a6fd8;
+        }
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Timestamp Converter - Icon Generator</h1>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Click on any size below to generate the PNG icon</li>
+                <li>Click the "Download" button to save the icon</li>
+                <li>Rename the downloaded files to: <code>icon16.png</code>, <code>icon48.png</code>, <code>icon128.png</code></li>
+                <li>Place them in your extension folder</li>
+            </ol>
+        </div>
+
+        <div class="icon-preview">
+            <h3>Original SVG Icon:</h3>
+            <div id="svgContainer"></div>
+        </div>
+
+        <div class="icon-sizes">
+            <div class="size-option" onclick="generateIcon(16)">
+                <h4>16x16</h4>
+                <canvas id="canvas16" width="16" height="16"></canvas>
+                <br>
+                <button class="download-btn" onclick="downloadIcon(16)">Download</button>
+            </div>
+            
+            <div class="size-option" onclick="generateIcon(48)">
+                <h4>48x48</h4>
+                <canvas id="canvas48" width="48" height="48"></canvas>
+                <br>
+                <button class="download-btn" onclick="downloadIcon(48)">Download</button>
+            </div>
+            
+            <div class="size-option" onclick="generateIcon(128)">
+                <h4>128x128</h4>
+                <canvas id="canvas128" width="128" height="128"></canvas>
+                <br>
+                <button class="download-btn" onclick="downloadIcon(128)">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const svgString = `<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="64" cy="64" r="60" fill="#667eea" stroke="#4c63d2" stroke-width="2"/>
+            <circle cx="64" cy="64" r="45" fill="white" stroke="#667eea" stroke-width="2"/>
+            <line x1="64" y1="64" x2="64" y2="35" stroke="#667eea" stroke-width="3" stroke-linecap="round"/>
+            <line x1="64" y1="64" x2="80" y2="64" stroke="#667eea" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="64" cy="64" r="3" fill="#667eea"/>
+            <text x="64" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">UTC</text>
+            <circle cx="64" cy="25" r="2" fill="#667eea"/>
+            <circle cx="103" cy="64" r="2" fill="#667eea"/>
+            <circle cx="64" cy="103" r="2" fill="#667eea"/>
+            <circle cx="25" cy="64" r="2" fill="#667eea"/>
+        </svg>`;
+
+        // Display original SVG
+        document.getElementById('svgContainer').innerHTML = svgString;
+
+        function generateIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            const img = new Image();
+            const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = function() {
+                ctx.clearRect(0, 0, size, size);
+                ctx.drawImage(img, 0, 0, size, size);
+                URL.revokeObjectURL(url);
+            };
+            
+            img.src = url;
+        }
+
+        function downloadIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const link = document.createElement('a');
+            link.download = `icon${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Generate all icons on page load
+        window.onload = function() {
+            setTimeout(() => {
+                generateIcon(16);
+                generateIcon(48);
+                generateIcon(128);
+            }, 500);
+        };
+    </script>
+</body>
+</html> 
